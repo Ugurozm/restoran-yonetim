@@ -4,7 +4,8 @@ const QRCode = require('qrcode');
 
 router.get('/:tableNumber', async (req, res) => {
   const { tableNumber } = req.params;
-  const url = `http://localhost:5173/masa/${tableNumber}`;
+  const baseUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const url = `${baseUrl}/masa/${tableNumber}`;
 
   try {
     const qrDataUrl = await QRCode.toDataURL(url, {
