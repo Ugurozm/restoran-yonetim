@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
-const API = 'http://localhost:3001/api'
+import { API } from '../config'
 
 // Font ve global stiller
 const GlobalStyle = () => (

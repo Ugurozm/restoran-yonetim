@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const API = 'http://localhost:3001/api'
+import { API, lively-enjoyment-production-4acb.up.railway.app } from '../config'
 
 const STATUS = {
   empty:    { bg: '#F5F0EB', border: '#E8DDD5', color: '#9B7B6A', label: 'Bos',           icon: '🪑' },

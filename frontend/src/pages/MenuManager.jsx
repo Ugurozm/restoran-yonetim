@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const API = 'http://localhost:3001/api'
+import { API } from '../config'
 const CATEGORIES = ['Ana Yemek', 'Başlangıç', 'İçecek', 'Tatlı', 'Diğer']
 const emptyForm = { category: 'Ana Yemek', name: '', price: '' }
 
