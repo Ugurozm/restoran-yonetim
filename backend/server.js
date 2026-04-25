@@ -8,10 +8,10 @@ const { startDailyReset } = require('./jobs/dailyReset');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: 'http://localhost:5173' }
-});
+  cors: { origin: '*' }
+})
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors())
 app.use(express.json());
 
 io.on('connection', (socket) => {
