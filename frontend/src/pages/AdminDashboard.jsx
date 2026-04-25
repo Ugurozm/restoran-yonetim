@@ -9,7 +9,7 @@ import { Bar } from 'react-chartjs-2'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const API = 'http://localhost:3001/api'
+import { API } from '../config'
 
 export default function AdminDashboard() {
   const [data, setData] = useState(null)

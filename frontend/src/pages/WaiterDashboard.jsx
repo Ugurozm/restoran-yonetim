@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import { API, SOCKET_URL } from '../config'
 import { API, SOCKET_URL } from '../config'
 
 const STATUS = {
@@ -22,14 +22,14 @@ export default function WaiterDashboard() {
   const [addForm, setAddForm] = useState({ item_name: '', price: '' })
   const [addMode, setAddMode] = useState('menu') // 'menu' | 'manual'
   const [loading, setLoading] = useState(false)
-
+  
   useEffect(() => {
     fetchTables()
     axios.get(`${API}/menu`).then(r => setMenu(r.data))
 
     let socket
     import('socket.io-client').then(({ io }) => {
-      socket = io('http://localhost:3001')
+      socket = io(SOCKET_URL)
       socket.on('payment_update', data => {
         showNotification('payment', `💳 ${data.payer_name} odeme yapti`)
         fetchTables()
