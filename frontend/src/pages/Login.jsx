@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
-const API = 'http://localhost:3001/api'
+import { API } from '../config'
 
 export default function Login() {
   const [username, setUsername] = useState('')

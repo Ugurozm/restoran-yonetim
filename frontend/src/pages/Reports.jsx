@@ -14,7 +14,7 @@ ChartJS.register(
   Title, Tooltip, Legend, Filler
 )
 
-const API = 'http://localhost:3001/api'
+import { API } from '../config'
 
 export default function Reports() {
   const [summary, setSummary] = useState(null)

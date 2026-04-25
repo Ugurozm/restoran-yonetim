@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
-const API = 'http://localhost:3001/api'
+import { API } from '../config'
 
 export default function QRPage() {
   const [tables, setTables] = useState([])
