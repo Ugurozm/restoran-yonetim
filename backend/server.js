@@ -9,9 +9,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: '*' }
-})
+});
 
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 
 io.on('connection', (socket) => {
@@ -29,9 +29,10 @@ app.use('/api/pay',       require('./routes/payments'));
 app.use('/api/qr',        require('./routes/qr'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/reports',   require('./routes/reports'));
+app.use('/api/users',     require('./routes/users'));
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log('Sunucu calisiyor: http://localhost:' + PORT);
   startDailyReset(io);
-}); 
+});

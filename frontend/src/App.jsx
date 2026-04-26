@@ -7,16 +7,18 @@ import AdminDashboard from './pages/AdminDashboard'
 import MenuManager from './pages/MenuManager'
 import Reports from './pages/Reports'
 import TableManager from './pages/TableManager'
+import UserManager from './pages/UserManager'
 import Login from './pages/Login'
 
 const NAV_ITEMS = {
   patron: [
-    { path: '/garson',   label: 'Garson Paneli', icon: '👨‍🍳', match: '/garson' },
-    { path: '/yonetim',  label: 'Yönetim',       icon: '📊', match: '/yonetim' },
-    { path: '/raporlar', label: 'Raporlar',       icon: '📈', match: '/raporlar' },
-    { path: '/menu',     label: 'Menü',           icon: '📋', match: '/menu' },
-    { path: '/masalar',  label: 'Masalar',        icon: '🪑', match: '/masalar' },
-    { path: '/qr',       label: 'QR Kodlar',      icon: '📱', match: '/qr' },
+    { path: '/garson',       label: 'Garson Paneli', icon: '👨‍🍳', match: '/garson' },
+    { path: '/yonetim',      label: 'Yonetim',       icon: '📊', match: '/yonetim' },
+    { path: '/raporlar',     label: 'Raporlar',       icon: '📈', match: '/raporlar' },
+    { path: '/menu',         label: 'Menu',           icon: '📋', match: '/menu' },
+    { path: '/masalar',      label: 'Masalar',        icon: '🪑', match: '/masalar' },
+    { path: '/kullanicilar', label: 'Kullanicilar',   icon: '👥', match: '/kullanicilar' },
+    { path: '/qr',           label: 'QR Kodlar',      icon: '📱', match: '/qr' },
   ],
   garson: [
     { path: '/garson', label: 'Garson Paneli', icon: '👨‍🍳', match: '/garson' },
@@ -27,9 +29,7 @@ function ProtectedRoute({ children, allowedRoles }) {
   const { user, loading } = useAuth()
   if (loading) return null
   if (!user) return <Navigate to="/login" replace />
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/garson" replace />
-  }
+  if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/garson" replace />
   return children
 }
 
@@ -64,7 +64,7 @@ function Sidebar() {
 
       <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', margin: '8px 0' }} />
 
-      <nav style={{ flex: 1, padding: '8px 12px' }}>
+      <nav style={{ flex: 1, padding: '8px 12px', overflowY: 'auto' }}>
         {navItems.map(item => {
           const isActive = location.pathname.startsWith(item.match)
           return (
@@ -89,7 +89,7 @@ function Sidebar() {
           background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)',
           fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px'
         }}>
-          <span>🚪</span> Çıkış Yap
+          <span>🚪</span> Cikis Yap
         </button>
       </div>
     </aside>
@@ -114,40 +114,28 @@ function AppContent() {
           <Route path="/login" element={
             user ? <Navigate to={user.role === 'patron' ? '/yonetim' : '/garson'} replace /> : <Login />
           } />
-
           <Route path="/masa/:tableNumber" element={<TableView />} />
-
           <Route path="/garson" element={
-            <ProtectedRoute allowedRoles={['patron', 'garson']}>
-              <WaiterDashboard />
-            </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['patron', 'garson']}><WaiterDashboard /></ProtectedRoute>
           } />
           <Route path="/yonetim" element={
-            <ProtectedRoute allowedRoles={['patron']}>
-              <AdminDashboard />
-            </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['patron']}><AdminDashboard /></ProtectedRoute>
           } />
           <Route path="/raporlar" element={
-            <ProtectedRoute allowedRoles={['patron']}>
-              <Reports />
-            </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['patron']}><Reports /></ProtectedRoute>
           } />
           <Route path="/menu" element={
-            <ProtectedRoute allowedRoles={['patron']}>
-              <MenuManager />
-            </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['patron']}><MenuManager /></ProtectedRoute>
           } />
           <Route path="/masalar" element={
-            <ProtectedRoute allowedRoles={['patron']}>
-              <TableManager />
-            </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['patron']}><TableManager /></ProtectedRoute>
+          } />
+          <Route path="/kullanicilar" element={
+            <ProtectedRoute allowedRoles={['patron']}><UserManager /></ProtectedRoute>
           } />
           <Route path="/qr" element={
-            <ProtectedRoute allowedRoles={['patron']}>
-              <QRPage />
-            </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['patron']}><QRPage /></ProtectedRoute>
           } />
-
           <Route path="/" element={
             <Navigate to={user ? (user.role === 'patron' ? '/yonetim' : '/garson') : '/login'} replace />
           } />
