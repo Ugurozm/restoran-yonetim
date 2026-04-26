@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 const db = require('../db');
 const auth = require('../middleware/auth');
 
-// Tüm kullanıcıları getir (sadece patron)
 router.get('/', auth('patron'), async (req, res) => {
   try {
     const result = await db.query(
@@ -15,7 +15,6 @@ router.get('/', auth('patron'), async (req, res) => {
   }
 });
 
-// Yeni kullanıcı ekle
 router.post('/', auth('patron'), async (req, res) => {
   const { name, username, password, role } = req.body;
   if (!name || !username || !password || !role) {
@@ -29,9 +28,10 @@ router.post('/', auth('patron'), async (req, res) => {
     if (existing.rows.length) {
       return res.status(400).json({ error: 'Bu kullanici adi zaten kullaniliyor' });
     }
+    const hashed = await bcrypt.hash(password, 10);
     const result = await db.query(
       'INSERT INTO users (name, username, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, username, role',
-      [name, username, password, role]
+      [name, username, hashed, role]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -39,7 +39,6 @@ router.post('/', auth('patron'), async (req, res) => {
   }
 });
 
-// Kullanıcı güncelle
 router.put('/:id', auth('patron'), async (req, res) => {
   const { id } = req.params;
   const { name, username, password, role } = req.body;
@@ -56,9 +55,10 @@ router.put('/:id', auth('patron'), async (req, res) => {
 
     let result;
     if (password) {
+      const hashed = await bcrypt.hash(password, 10);
       result = await db.query(
         'UPDATE users SET name=$1, username=$2, password=$3, role=$4 WHERE id=$5 RETURNING id, name, username, role',
-        [name, username, password, role, id]
+        [name, username, hashed, role, id]
       );
     } else {
       result = await db.query(
@@ -74,7 +74,6 @@ router.put('/:id', auth('patron'), async (req, res) => {
   }
 });
 
-// Kullanıcı sil
 router.delete('/:id', auth('patron'), async (req, res) => {
   const { id } = req.params;
   try {
