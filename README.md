@@ -52,7 +52,7 @@ Modern restoran yönetim sistemi. QR kod ile sipariş, anlık ödeme takibi ve g
 
 \- \*\*Patron:\*\* patron / 1234
 
-\- \*\*Garson:\*\* garson1 / 1234
+\- \*\*Garson:\*\* garson1 / 12345
 
 
 
